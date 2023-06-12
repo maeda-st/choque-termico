@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Forms/main_form.ui'
+# Form implementation generated from reading ui file 'View/main_form.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -15,6 +15,38 @@ class Ui_MainForm(object):
     def setupUi(self, MainForm):
         MainForm.setObjectName("MainForm")
         MainForm.resize(1020, 600)
+        self.label = QtWidgets.QLabel(MainForm)
+        self.label.setGeometry(QtCore.QRect(20, 270, 971, 291))
+        self.label.setStyleSheet("border-image: url(:/img/logo.png);")
+        self.label.setText("")
+        self.label.setObjectName("label")
+        self.btIniciar = QtWidgets.QPushButton(MainForm)
+        self.btIniciar.setGeometry(QtCore.QRect(20, 40, 162, 112))
+        font = QtGui.QFont()
+        font.setPointSize(22)
+        font.setBold(True)
+        font.setItalic(True)
+        font.setWeight(75)
+        self.btIniciar.setFont(font)
+        self.btIniciar.setObjectName("btIniciar")
+        self.btConfig = QtWidgets.QPushButton(MainForm)
+        self.btConfig.setGeometry(QtCore.QRect(410, 40, 162, 112))
+        font = QtGui.QFont()
+        font.setPointSize(22)
+        font.setBold(True)
+        font.setItalic(True)
+        font.setWeight(75)
+        self.btConfig.setFont(font)
+        self.btConfig.setObjectName("btConfig")
+        self.btManual = QtWidgets.QPushButton(MainForm)
+        self.btManual.setGeometry(QtCore.QRect(830, 40, 162, 112))
+        font = QtGui.QFont()
+        font.setPointSize(22)
+        font.setBold(True)
+        font.setItalic(True)
+        font.setWeight(75)
+        self.btManual.setFont(font)
+        self.btManual.setObjectName("btManual")
 
         self.retranslateUi(MainForm)
         QtCore.QMetaObject.connectSlotsByName(MainForm)
@@ -22,6 +54,10 @@ class Ui_MainForm(object):
     def retranslateUi(self, MainForm):
         _translate = QtCore.QCoreApplication.translate
         MainForm.setWindowTitle(_translate("MainForm", "Janela Principal"))
+        self.btIniciar.setText(_translate("MainForm", "Inicar"))
+        self.btConfig.setText(_translate("MainForm", "Configurar"))
+        self.btManual.setText(_translate("MainForm", "Manual"))
+# import logo_rc
 
 
 if __name__ == "__main__":

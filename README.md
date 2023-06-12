@@ -54,3 +54,11 @@ Com o Qt Designer desenvolva a tela com extensão .ui e em seguida, no direório
 pyuic5 -x arquivo.ui -o arquivo.py
 ```
 
+Para gerar recursos de imagens no PyQt5:
+
+```text
+pyrcc5 nome_do_recurso.qrc -o nome_do_arquivo.py
+```
+
+Esse arquivo .qrc é gerado no QT Designer e com o comando pyrcc5 faz-se a conversão para a extensão .py
+

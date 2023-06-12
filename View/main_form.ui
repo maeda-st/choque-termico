@@ -13,7 +13,88 @@
   <property name="windowTitle">
    <string>Janela Principal</string>
   </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>270</y>
+     <width>971</width>
+     <height>291</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/img/logo.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btIniciar">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>40</y>
+     <width>162</width>
+     <height>112</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+     <weight>75</weight>
+     <italic>true</italic>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Inicar</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btConfig">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>40</y>
+     <width>162</width>
+     <height>112</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+     <weight>75</weight>
+     <italic>true</italic>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Configurar</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btManual">
+   <property name="geometry">
+    <rect>
+     <x>830</x>
+     <y>40</y>
+     <width>162</width>
+     <height>112</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+     <weight>75</weight>
+     <italic>true</italic>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Manual</string>
+   </property>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../img/logo.qrc"/>
+ </resources>
  <connections/>
 </ui>
