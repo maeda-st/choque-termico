@@ -4,6 +4,7 @@ class Dado:
 
         self.tela_ativa = self.TELA_PRINCIPAL
         self.aciona_buzzer = True
+        self.valor_teclado = None
         
         self._cursor = 'cross'
         #self._cursor = 'none'
