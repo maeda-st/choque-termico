@@ -43,7 +43,6 @@ class AlphanumericKeyboard(QDialog):
     def on_ok_click(self):
         value = self.line_edit.text()
         self.dado.valor_teclado = value
-        print("Valor obtido:", self.dado.valor_teclado)
         self.close()
 
 class NumericKeyboard(QDialog):
@@ -95,7 +94,6 @@ class NumericKeyboard(QDialog):
     def on_ok_click(self):
         value = self.line_edit.text()
         self.dado.valor_teclado = value
-        print("Valor obtido:", self.dado.valor_teclado)
         self.close()
 
 if __name__ == '__main__':

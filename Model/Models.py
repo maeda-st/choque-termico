@@ -64,9 +64,6 @@ class OperacaoManual(QDialog):
         numeric_keyboard.exec_() # Roda como modal
         self.ui.txTemperatura.setText(self.dado.valor_teclado)
 
-    # def show(self):
-    #     print("Está visivel")
-
     def voltar(self):
         self.close()# Chama o evento closedEvent
 
