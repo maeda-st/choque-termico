@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from Model.MainWindow import MainWindow
+from Model.Models import MainWindow
 
 from img import logo
 
