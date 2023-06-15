@@ -1,3 +1,7 @@
+import threading
+import time
+import random
+
 class Dado:
     def __init__(self):
         self.TELA_PRINCIPAL = 0
@@ -18,6 +22,11 @@ class Dado:
         self._red = '#FF0000'
         self._green = '#2CCA28'
         self._blue = '#31455B'
+
+        self.temp = Temperatura()
+
+        self.temp.start()
+    
         
     @property
     def cursor(self):
@@ -55,3 +64,23 @@ class Dado:
     @property
     def blue(self):
         return self._blue
+    
+class Temperatura(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self._temperatura = 0
+        self._running = True
+
+    def run(self):
+        cnt = 0
+        while self._running == True:
+            time.sleep(1)
+            self._temperatura = random.randint(20,100)
+            #print(self.temperatura)
+
+    def stop(self):
+        self._running = False
+
+    @property
+    def temperatura(self):
+        return self._temperatura

@@ -1,17 +1,43 @@
 import sys
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QObject, pyqtSignal, QThread
 from View.main_form import Ui_MainForm
 from View.form_operacao_manual import Ui_formManual
 from Controller.Teclados import NumericKeyboard, AlphanumericKeyboard
-from Controller.Dados import Dado
+import time
+
+class Atualizador(QObject):
+    sinal_atualizar = pyqtSignal(str)
+
+    def __init__(self, operacao_manual):
+        super().__init__()
+        self.operacao_manual = operacao_manual
+        self._running = True
+
+    def atualizar_valor(self):
+        while self._running == True:
+            # Obtém o valor atualizado do dado (ou qualquer outra lógica necessária)
+            valor_atualizado = str(self.operacao_manual.dado.temp.temperatura)
+            print(valor_atualizado)
+
+            # Emite o sinal para atualizar a interface do usuário
+            self.sinal_atualizar.emit(valor_atualizado)
+
+            # Aguarda 1 segundo antes de atualizar novamente
+            QApplication.processEvents()
+            time.sleep(1)
+
+    def parar(self):
+        self._running = False
+
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, dado=None):
         super().__init__()
 
         self.janela_teste_saida = None
+        self.dado = dado
 
         # Configuração da interface do usuário gerada pelo Qt Designer
         self.ui = Ui_MainForm()
@@ -27,23 +53,23 @@ class MainWindow(QMainWindow):
         # Definir a posição da janela no canto superior esquerdo
         self.move(mainScreenRect.topLeft())
 
-        self.ui.btManual.clicked.connect(self.voltar)
+        self.ui.btManual.clicked.connect(self.operacao_manual)
 
-    def voltar(self):
-        self.janela_operacao_manual = OperacaoManual()
+    def operacao_manual(self):
+        self.janela_operacao_manual = OperacaoManual(dado=self.dado)
         #self.janela2.showMaximized()
         self.janela_operacao_manual.exec_()
         # self.hide()
         # self.close()
 
 class OperacaoManual(QDialog):
-    def __init__(self):
+    def __init__(self, dado=None):
         super().__init__()
 
         # Configuração da interface do usuário gerada pelo Qt Designer
         self.ui = Ui_formManual()
         self.ui.setupUi(self)
-        self.dado = Dado()
+        self.dado = dado
 
         # Remover a barra de título e ocultar os botões de maximizar e minimizar
         # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
@@ -56,20 +82,33 @@ class OperacaoManual(QDialog):
         self.move(mainScreenRect.topLeft())
 
         self.ui.btVoltar.clicked.connect(self.voltar)
-        self.ui.txTemperatura.mousePressEvent = self.teclado
+        self.ui.txSetPointQuente.mousePressEvent = self.teclado
+
+        # Inicializar o atualizador em uma nova thread
+        self.atualizador = Atualizador(self)
+        self.atualizador.sinal_atualizar.connect(self.atualizar_valor)
+        self.atualizador_thread = QThread()
+        self.atualizador.moveToThread(self.atualizador_thread)
+        self.atualizador_thread.started.connect(self.atualizador.atualizar_valor)
+        self.atualizador_thread.start()
 
     def teclado(self, event):
         numeric_keyboard = NumericKeyboard(dado=self.dado)
         
         numeric_keyboard.exec_() # Roda como modal
-        self.ui.txTemperatura.setText(self.dado.valor_teclado)
+        self.ui.txSetPointQuente.setText(self.dado.valor_teclado)
 
     def voltar(self):
         self.close()# Chama o evento closedEvent
 
+    def atualizar_valor(self, valor):
+        self.ui.txTemperaturaQuente.setText(valor)
+
     def closeEvent(self, event):
         # self.origem = MainWindow()
-        #self.origem.showMaximized()
+        # self.origem.showMaximized()
         # self.origem.show()
         # event.accept()# esse método aceita o pedido de fechamento....
-        pass
+        self.atualizador.parar()  # Parar a thread do atualizador
+        self.atualizador_thread.quit()
+        self.atualizador_thread.wait()
