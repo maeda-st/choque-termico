@@ -33,13 +33,13 @@ class PTA9B(threading.Thread):
             self.instrument = minimalmodbus.Instrument(self.port_name, self.device_address, debug=self.device_debug)
             # MODBUS instrument connection settings
             # Change as needed depending on your Hardware requirements
-            self.instrument.serial.baudrate = 9600
-            self.instrument.serial.bytesize = 8
-            self.instrument.serial.parity   = minimalmodbus.serial.PARITY_NONE
-            self.instrument.serial.stopbits = 1
-            self.instrument.mode = minimalmodbus.MODE_RTU
-            self.instrument.serial.timeout = 0.2
-            self.start()
+            self.instrument.serial.baudrate = self.baudrate
+            self.instrument.serial.bytesize = self.bytesize
+            self.instrument.serial.parity   = self.parity
+            self.instrument.serial.stopbits = self.stopbits
+            self.instrument.mode = self.mode
+            self.instrument.serial.timeout = self.timeout
+            # self.start()
         except:
             print("Falha na conunicação!")
     
@@ -93,11 +93,11 @@ class PTA9B(threading.Thread):
         return round(ret)
 
     def run(self):
-        while self._running == True:
-                self._temperature = self.get_temperature()
-                print(f'Temperatura: {self.temperature} C')
-                time.sleep(1)
-    time.sleep(1)
+        # while self._running == True:
+        #         self._temperature = self.get_temperature()
+        #         print(f'Temperatura: {self.temperature} C')
+        #         time.sleep(1)
+        pass
 
     def stop(self):
         self._running = False

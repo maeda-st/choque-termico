@@ -1,6 +1,7 @@
 import threading
 import time
 import random
+from Controller.Pt100PTA9B import PTA9B
 
 class Dado:
     def __init__(self):
@@ -70,12 +71,13 @@ class Temperatura(threading.Thread):
         threading.Thread.__init__(self)
         self._temperatura = 0
         self._running = True
+        self.temperatura_quente =None
 
     def run(self):
-        cnt = 0
+        self.temperatura_quente = PTA9B(port_name='/dev/ttyUSB0',device_address=1, device_debug=False, res_ofset=19.4)
         while self._running == True:
             time.sleep(1)
-            self._temperatura = random.randint(20,100)
+            self._temperatura = self.temperatura_quente.get_temperature()
             #print(self.temperatura)
 
     def stop(self):
