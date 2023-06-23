@@ -8,7 +8,7 @@ from Controller.Teclados import NumericKeyboard, AlphanumericKeyboard
 import time
 
 class Atualizador(QObject):
-    sinal_atualizar = pyqtSignal(str)
+    sinal_atualizar = pyqtSignal(str, str)
 
     def __init__(self, operacao_manual):
         super().__init__()
@@ -19,10 +19,11 @@ class Atualizador(QObject):
         while self._running == True:
             # Obtém o valor atualizado do dado (ou qualquer outra lógica necessária)
             valor_atualizado = str(self.operacao_manual.dado.temp.temperatura)
-            print(valor_atualizado)
+            valor_atualizado_fria = str( self.operacao_manual.dado.temp.temperatura_fria )
+            # print(valor_atualizado)
 
             # Emite o sinal para atualizar a interface do usuário
-            self.sinal_atualizar.emit(valor_atualizado)
+            self.sinal_atualizar.emit(valor_atualizado, valor_atualizado_fria)
 
             # Aguarda 1 segundo antes de atualizar novamente
             QApplication.processEvents()
@@ -101,8 +102,9 @@ class OperacaoManual(QDialog):
     def voltar(self):
         self.close()# Chama o evento closedEvent
 
-    def atualizar_valor(self, valor):
-        self.ui.txTemperaturaQuente.setText(valor)
+    def atualizar_valor(self, valor_quente, valor_frio):
+        self.ui.txTemperaturaQuente.setText(valor_quente)
+        self.ui.txTemperaturaFrio.setText(valor_frio)
 
     def closeEvent(self, event):
         # self.origem = MainWindow()

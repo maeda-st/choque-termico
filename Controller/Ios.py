@@ -12,6 +12,7 @@ class InOut:
 
         self.PROTECAO_TERMICA = 12
         self.BOTAO_EMERGENCIA = 13
+        self.PORTA_ABERTA_FECHADA = 21
         
         GPIO.setmode(GPIO.BCM) 
         GPIO.setwarnings(False)
@@ -25,6 +26,7 @@ class InOut:
 
         GPIO.setup(self.PROTECAO_TERMICA, GPIO.IN)
         GPIO.setup(self.BOTAO_EMERGENCIA, GPIO.IN)
+        GPIO.setup(self.PORTA_ABERTA_FECHADA, GPIO.IN)
         
         GPIO.output(self.BUZZER, 0)
         GPIO.output(self.RESISTENCIAS, 0)
@@ -76,3 +78,7 @@ class InOut:
     @property
     def botao_emergencia(self):
         return GPIO.input(self.BOTAO_EMERGENCIA)
+    
+    @property
+    def porta_aberta_fechada(self):
+        return GPIO.input(self.PORTA_ABERTA_FECHADA)
