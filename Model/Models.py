@@ -83,7 +83,15 @@ class OperacaoManual(QDialog):
         self.move(mainScreenRect.topLeft())
 
         self.ui.btVoltar.clicked.connect(self.voltar)
-        self.ui.txSetPointQuente.mousePressEvent = self.teclado
+        self.ui.txSetPointQuente.mousePressEvent = self.teclado_set_point_quente
+        self.ui.txSetPointFrio.mousePressEvent = self.teclado_set_point_frio
+        self.ui.btLigaQuente.clicked.connect(self.liga_controle_resistencias)
+        self.ui.btDesligaQuente.clicked.connect(self.desliga_controle_resistencias)
+        self.ui.btLigaFrio.clicked.connect(self.liga_controle_refrigeracao)
+        self.ui.btDesligaFrio.clicked.connect(self.desliga_controle_refrigeracao)
+
+        self.ui.txSetPointQuente.setText(str(self.dado.temperatura_quente_set_point))
+        self.ui.txSetPointFrio.setText(str(self.dado.temperatura_fria_set_point))
 
         # Inicializar o atualizador em uma nova thread
         self.atualizador = Atualizador(self)
@@ -93,11 +101,19 @@ class OperacaoManual(QDialog):
         self.atualizador_thread.started.connect(self.atualizador.atualizar_valor)
         self.atualizador_thread.start()
 
-    def teclado(self, event):
-        numeric_keyboard = NumericKeyboard(dado=self.dado)
+    def teclado_set_point_quente(self, event):
+        numeric_keyboard = NumericKeyboard(dado=self.dado, mode = 'quente')
         
         numeric_keyboard.exec_() # Roda como modal
-        self.ui.txSetPointQuente.setText(self.dado.valor_teclado)
+        self.ui.txSetPointQuente.setText(str(self.dado.valor_teclado_setpoint_quente))
+        self.dado.set_temperatura_quente_setpoint( float( self.ui.txSetPointQuente.text() ) )
+
+    def teclado_set_point_frio(self, event):
+        numeric_keyboard = NumericKeyboard(dado=self.dado, mode = 'frio')
+
+        numeric_keyboard.exec_() # Roda como modal
+        self.ui.txSetPointFrio.setText(str(self.dado.valor_teclado_setpoint_frio))
+        self.dado.set_temperatura_fria_setpoint( float( self.ui.txSetPointFrio.text() ) )
 
     def voltar(self):
         self.close()# Chama o evento closedEvent
@@ -105,6 +121,18 @@ class OperacaoManual(QDialog):
     def atualizar_valor(self, valor_quente, valor_frio):
         self.ui.txTemperaturaQuente.setText(valor_quente)
         self.ui.txTemperaturaFrio.setText(valor_frio)
+
+    def liga_controle_resistencias(self):
+        self.dado._controle_quente_estah_acionado = True
+
+    def desliga_controle_resistencias(self):
+        self.dado._controle_quente_estah_acionado = False
+
+    def liga_controle_refrigeracao(self):
+        self.dado._controle_frio_estah_acionado = True
+
+    def desliga_controle_refrigeracao(self):
+        self.dado._controle_frio_estah_acionado = False
 
     def closeEvent(self, event):
         # self.origem = MainWindow()

@@ -83,11 +83,11 @@ class Ui_formManual(object):
         self.label_2.setText(_translate("formManual", "<html><head/><body><p><span style=\" font-size:28pt; font-weight:600;\">Câmara quente</span></p></body></html>"))
         self.label_3.setText(_translate("formManual", "Set point"))
         self.label_4.setText(_translate("formManual", "Temperatura"))
-        self.btLigaQuente.setText(_translate("formManual", "LIga"))
+        self.btLigaQuente.setText(_translate("formManual", "Liga"))
         self.btDesligaQuente.setText(_translate("formManual", "Desliga"))
         self.label_5.setText(_translate("formManual", "Temperatura"))
         self.label_6.setText(_translate("formManual", "Set point"))
-        self.btLigaFrio.setText(_translate("formManual", "LIga"))
+        self.btLigaFrio.setText(_translate("formManual", "Liga"))
         self.btDesligaFrio.setText(_translate("formManual", "Desliga"))
         self.label_7.setText(_translate("formManual", "<html><head/><body><p><span style=\" font-size:28pt; font-weight:600;\">Câmara fria</span></p></body></html>"))
 

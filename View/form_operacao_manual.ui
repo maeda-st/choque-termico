@@ -134,7 +134,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>LIga</string>
+    <string>Liga</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btDesligaQuente">
@@ -206,7 +206,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>LIga</string>
+    <string>Liga</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btDesligaFrio">

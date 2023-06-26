@@ -15,12 +15,18 @@ class ControleProporcional(threading.Thread):
         self.Pb=0.0
         self.ton_pwm = 0.0
         self.toff_pwm = 0.0
+        self.ton_pwm_circulacao_fria = 0.0
+        self.toff_pwm_circulacao_fria = 0.0
+        self._running = True
+        
+        self.start() 
             
     def run(self):
-        while True:
-            if self._dado.controle_quente_estah_acionado == True and self.out.porta_aberta_fechada == 0:
-                self.Et = self._dado.temperatura_set_point - self._dado.temp.temperatura
-                self.Pb = self._dado.ganho_poporcional_sistema
+        while self._running == True:
+            #if self._dado.controle_quente_estah_acionado == True and self.out.porta_aberta_fechada == 0:
+            if self._dado.controle_quente_estah_acionado:
+                self.Et = self._dado.temperatura_quente_set_point - self._dado.temp.temperatura
+                self.Pb = self._dado.ganho_poporcional_temperatura_quente
 
                 if self.Pb < 0.2:
                     self.Pb = 0.2
@@ -49,6 +55,29 @@ class ControleProporcional(threading.Thread):
                 self.out.circulacao_quente(0)
                 time.sleep(1)
 
+            if self._dado.controle_frio_estah_acionado == True:
+                
+
+                self.aciona_pwm_circulacao_fria(self._dado.pwm_circulacao_fria)
+
+                self.out.circulacao_fria(1)
+                time.sleep(self.ton_pwm_circulacao_fria)
+                self.out.circulacao_fria(0)
+                time.sleep(self.toff_pwm_circulacao_fria)
+
+            else:
+                self.out.circulacao_fria(0)
+                self.out.refrigeracao(0)
+                time.sleep(1)
+
+    def stop(self):
+        self._running = False
+        self.join()
+
     def aciona_pwm(self, porcento):
         self.ton_pwm = (porcento * self._dado.PERIODO_PWM)/100
         self.toff_pwm = self._dado.PERIODO_PWM - self.ton_pwm
+
+    def aciona_pwm_circulacao_fria(self, porcento):
+        self.ton_pwm_circulacao_fria = (porcento * self._dado.PERIODO_PWM_CIRCULACAO_FRIA)/100
+        self.toff_pwm_circulacao_fria = self._dado.PERIODO_PWM - self.ton_pwm

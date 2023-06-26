@@ -42,13 +42,14 @@ class AlphanumericKeyboard(QDialog):
 
     def on_ok_click(self):
         value = self.line_edit.text()
-        self.dado.valor_teclado = value
+        self.dado.set_valor_teclado_setpoint_quente(value)
         self.close()
 
 class NumericKeyboard(QDialog):
-    def __init__(self, dado = None):
+    def __init__(self, dado = None, mode = None):
         super().__init__()
         self.dado = dado
+        self.mode = mode
         self.setWindowTitle("Teclado Numérico")
         self.layout = QVBoxLayout()
         self.line_edit = QLineEdit()
@@ -58,9 +59,9 @@ class NumericKeyboard(QDialog):
             '1', '2', '3',
             '4', '5', '6',
             '7', '8', '9',
-            '.', '0', '<-'
+            '.', '0', '<-','-'
         ]
-        positions = [(i, j) for i in range(4) for j in range(3)]
+        positions = [(i, j) for i in range(5) for j in range(3)]
         for position, button in zip(positions, self.buttons):
             row, col = position
             button_obj = QPushButton(button)
@@ -74,7 +75,7 @@ class NumericKeyboard(QDialog):
         
         ok_button = QPushButton('OK')
         ok_button.clicked.connect(self.on_ok_click)
-        self.grid_layout.addWidget(ok_button, 4, 1, 1, 1)
+        self.grid_layout.addWidget(ok_button, 5, 1, 1, 1)
 
         self.layout.addLayout(self.grid_layout)
         self.setLayout(self.layout)
@@ -93,7 +94,10 @@ class NumericKeyboard(QDialog):
 
     def on_ok_click(self):
         value = self.line_edit.text()
-        self.dado.valor_teclado = value
+        if self.mode == 'quente':
+            self.dado.set_valor_teclado_setpoint_quente(value)
+        elif self.mode == 'frio':
+            self.dado.set_valor_teclado_setpoint_frio(value)
         self.close()
 
 if __name__ == '__main__':

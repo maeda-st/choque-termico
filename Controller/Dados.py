@@ -1,22 +1,29 @@
 import threading
 import time
-import random
+import pandas as pd
 from Controller.Pt100PTA9B import PTA9B
 
 class Dado:
     def __init__(self):
-        self.TELA_PRINCIPAL = 0
+        self.PERIODO_PWM = 1.0
+        self.PERIODO_PWM_CIRCULACAO_FRIA = 1.0
 
-        self.tela_ativa = self.TELA_PRINCIPAL
-        self.aciona_buzzer = True
-        self.valor_teclado = None
+        self._aciona_buzzer = True
+        self._valor_teclado_setpoint_quente = 0
+        self._valor_teclado_setpoint_frio = 0
+
+        self.df = pd.read_csv('Controller/db.csv')
         
         self._cursor = 'cross'
         #self._cursor = 'none'
         self._nome_programa = 'Camara choque térmico'
         self._controle_quente_estah_acionado = False
         self._controle_frio_estah_acionado = False
-        self._ganho_poporcional_sistema = 4
+        self._ganho_poporcional_temperatura_quente = 4
+        self._temperatura_quente_set_point = 0
+        self._temperatura_fria_set_point = 0
+        self._pwm_circulacao_fria = 50
+        
         
         self._black = '#000000'
         self._white = '#FFFFFF'
@@ -27,11 +34,25 @@ class Dado:
         self._green = '#2CCA28'
         self._blue = '#31455B'
 
+        self.set_temperatura_quente_setpoint(self.df.loc[0,'setpoint_quente'])
+        self.set_temperatura_fria_setpoint(self.df.loc[0,'setpoint_frio'])
+
         self.temp = Temperatura()
 
         self.temp.start()
+
+    @property
+    def aciona_buzzer(self):
+        return self._aciona_buzzer
     
-        
+    @property
+    def valor_teclado_setpoint_quente(self):
+        return self._valor_teclado_setpoint_quente
+    
+    @property
+    def valor_teclado_setpoint_frio(self):
+        return self._valor_teclado_setpoint_frio
+    
     @property
     def cursor(self):
         return self._cursor
@@ -49,8 +70,20 @@ class Dado:
         return self._controle_frio_estah_acionado
     
     @property
-    def ganho_poporcional_sistema(self):
-        return self._ganho_poporcional_sistema
+    def ganho_poporcional_temperatura_quente(self):
+        return self._ganho_poporcional_temperatura_quente
+    
+    @property
+    def temperatura_quente_set_point(self):
+        return self._temperatura_quente_set_point
+    
+    @property
+    def temperatura_fria_set_point(self):
+        return self._temperatura_fria_set_point
+    
+    @property
+    def pwm_circulacao_fria(self):
+        return self._pwm_circulacao_fria
 
     
     @property
@@ -80,6 +113,30 @@ class Dado:
     @property
     def blue(self):
         return self._blue
+    
+    def set_temperatura_quente_setpoint(self, setpoint):
+        self._temperatura_quente_set_point = setpoint
+        self.df.loc[0,'setpoint_quente'] = self._temperatura_quente_set_point
+        print(self.df.loc[0,'setpoint_quente'])
+        self.df.to_csv('Controller/db.csv', index=False)
+
+    def set_valor_teclado_setpoint_quente(self, setpoint):
+        self._valor_teclado_setpoint_quente = setpoint
+
+    def set_temperatura_fria_setpoint(self, setpoint):
+        self._temperatura_fria_set_point = setpoint
+        self.df.loc[0,'setpoint_frio'] = self._temperatura_fria_set_point
+        print(self.df.loc[0,'setpoint_frio'])
+        self.df.to_csv('Controller/db.csv', index=False)
+
+
+    def set_valor_teclado_setpoint_frio(self, setpoint):
+        self._valor_teclado_setpoint_frio = setpoint
+
+    def set_pwm_circulacao_fria(self, valor):
+        self._pwm_circulacao_fria = valor
+        
+
     
 class Temperatura(threading.Thread):
     def __init__(self):
