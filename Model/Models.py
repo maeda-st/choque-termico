@@ -85,6 +85,8 @@ class OperacaoManual(QDialog):
         self.ui.btVoltar.clicked.connect(self.voltar)
         self.ui.txSetPointQuente.mousePressEvent = self.teclado_set_point_quente
         self.ui.txSetPointFrio.mousePressEvent = self.teclado_set_point_frio
+        self.ui.txVeloVentilacao.mousePressEvent = self.teclado_set_velo_ventilacao
+
         self.ui.btLigaQuente.clicked.connect(self.liga_controle_resistencias)
         self.ui.btDesligaQuente.clicked.connect(self.desliga_controle_resistencias)
         self.ui.btLigaFrio.clicked.connect(self.liga_controle_refrigeracao)
@@ -92,6 +94,7 @@ class OperacaoManual(QDialog):
 
         self.ui.txSetPointQuente.setText(str(self.dado.temperatura_quente_set_point))
         self.ui.txSetPointFrio.setText(str(self.dado.temperatura_fria_set_point))
+        self.ui.txVeloVentilacao.setText(str(self.dado.pwm_circulacao_fria))
 
         # Inicializar o atualizador em uma nova thread
         self.atualizador = Atualizador(self)
@@ -105,15 +108,22 @@ class OperacaoManual(QDialog):
         numeric_keyboard = NumericKeyboard(dado=self.dado, mode = 'quente')
         
         numeric_keyboard.exec_() # Roda como modal
-        self.ui.txSetPointQuente.setText(str(self.dado.valor_teclado_setpoint_quente))
+        self.ui.txSetPointQuente.setText(str(self.dado.temperatura_quente_set_point))
         self.dado.set_temperatura_quente_setpoint( float( self.ui.txSetPointQuente.text() ) )
 
     def teclado_set_point_frio(self, event):
         numeric_keyboard = NumericKeyboard(dado=self.dado, mode = 'frio')
 
         numeric_keyboard.exec_() # Roda como modal
-        self.ui.txSetPointFrio.setText(str(self.dado.valor_teclado_setpoint_frio))
+        self.ui.txSetPointFrio.setText(str(self.dado.temperatura_fria_set_point))
         self.dado.set_temperatura_fria_setpoint( float( self.ui.txSetPointFrio.text() ) )
+
+    def teclado_set_velo_ventilacao(self, event):
+        numeric_keyboard = NumericKeyboard(dado=self.dado, mode='velo_circulacao')
+
+        numeric_keyboard.exec_()
+        self.ui.txVeloVentilacao.setText(str(self.dado.pwm_circulacao_fria))
+        self.dado.set_pwm_circulacao_fria( float(self.ui.txVeloVentilacao.text()) )
 
     def voltar(self):
         self.close()# Chama o evento closedEvent

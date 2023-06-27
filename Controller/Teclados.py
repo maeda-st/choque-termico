@@ -93,11 +93,14 @@ class NumericKeyboard(QDialog):
         self.line_edit.setText(current_text[:-1])
 
     def on_ok_click(self):
-        value = self.line_edit.text()
-        if self.mode == 'quente':
-            self.dado.set_valor_teclado_setpoint_quente(value)
-        elif self.mode == 'frio':
-            self.dado.set_valor_teclado_setpoint_frio(value)
+        if self.line_edit.text() != "":
+            value = self.line_edit.text()
+            if self.mode == 'quente':
+                self.dado.set_temperatura_quente_setpoint(value)
+            elif self.mode == 'frio':
+                self.dado.set_temperatura_fria_setpoint(value)
+            elif self.mode == 'velo_circulacao':
+                self.dado.set_pwm_circulacao_fria(value)
         self.close()
 
 if __name__ == '__main__':

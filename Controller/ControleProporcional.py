@@ -15,9 +15,8 @@ class ControleProporcional(threading.Thread):
         self.Pb=0.0
         self.ton_pwm = 0.0
         self.toff_pwm = 0.0
-        self.ton_pwm_circulacao_fria = 0.0
-        self.toff_pwm_circulacao_fria = 0.0
         self._running = True
+        self._delay_refrigeracao = 4
         
         self.start() 
             
@@ -55,10 +54,36 @@ class ControleProporcional(threading.Thread):
                 self.out.circulacao_quente(0)
                 time.sleep(1)
 
+    def stop(self):
+        self._running = False
+        self.join()
+
+    def aciona_pwm(self, porcento):
+        self.ton_pwm = (porcento * self._dado.PERIODO_PWM)/100
+        self.toff_pwm = self._dado.PERIODO_PWM - self.ton_pwm
+
+class ControleFrio(threading.Thread):
+    def __init__(self, dado, saida):
+        threading.Thread.__init__(self)
+        self.out = saida
+        self._dado = dado
+        self.ton_pwm_circulacao_fria = 0.0
+        self.toff_pwm_circulacao_fria = 0.0
+        self._running = True
+        
+        self.start() 
+            
+    def run(self):
+        while self._running == True:
             if self._dado.controle_frio_estah_acionado == True:
                 
-
                 self.aciona_pwm_circulacao_fria(self._dado.pwm_circulacao_fria)
+
+                if self._dado.temperatura_fria_set_point <= self._dado.temp.temperatura_fria:
+                    self.out.refrigeracao(1)
+                else:
+                    self.out.refrigeracao(0)
+
 
                 self.out.circulacao_fria(1)
                 time.sleep(self.ton_pwm_circulacao_fria)
@@ -74,10 +99,6 @@ class ControleProporcional(threading.Thread):
         self._running = False
         self.join()
 
-    def aciona_pwm(self, porcento):
-        self.ton_pwm = (porcento * self._dado.PERIODO_PWM)/100
-        self.toff_pwm = self._dado.PERIODO_PWM - self.ton_pwm
-
     def aciona_pwm_circulacao_fria(self, porcento):
         self.ton_pwm_circulacao_fria = (porcento * self._dado.PERIODO_PWM_CIRCULACAO_FRIA)/100
-        self.toff_pwm_circulacao_fria = self._dado.PERIODO_PWM - self.ton_pwm
+        self.toff_pwm_circulacao_fria = self._dado.PERIODO_PWM_CIRCULACAO_FRIA - self.ton_pwm_circulacao_fria

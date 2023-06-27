@@ -6,11 +6,9 @@ from Controller.Pt100PTA9B import PTA9B
 class Dado:
     def __init__(self):
         self.PERIODO_PWM = 1.0
-        self.PERIODO_PWM_CIRCULACAO_FRIA = 1.0
+        self.PERIODO_PWM_CIRCULACAO_FRIA = 0.5
 
         self._aciona_buzzer = True
-        self._valor_teclado_setpoint_quente = 0
-        self._valor_teclado_setpoint_frio = 0
 
         self.df = pd.read_csv('Controller/db.csv')
         
@@ -20,9 +18,10 @@ class Dado:
         self._controle_quente_estah_acionado = False
         self._controle_frio_estah_acionado = False
         self._ganho_poporcional_temperatura_quente = 4
+
         self._temperatura_quente_set_point = 0
         self._temperatura_fria_set_point = 0
-        self._pwm_circulacao_fria = 50
+        self._pwm_circulacao_fria = 0
         
         
         self._black = '#000000'
@@ -36,6 +35,7 @@ class Dado:
 
         self.set_temperatura_quente_setpoint(self.df.loc[0,'setpoint_quente'])
         self.set_temperatura_fria_setpoint(self.df.loc[0,'setpoint_frio'])
+        self.set_pwm_circulacao_fria(self.df.loc[0,'pwm_circulacao'])
 
         self.temp = Temperatura()
 
@@ -44,14 +44,6 @@ class Dado:
     @property
     def aciona_buzzer(self):
         return self._aciona_buzzer
-    
-    @property
-    def valor_teclado_setpoint_quente(self):
-        return self._valor_teclado_setpoint_quente
-    
-    @property
-    def valor_teclado_setpoint_frio(self):
-        return self._valor_teclado_setpoint_frio
     
     @property
     def cursor(self):
@@ -117,24 +109,17 @@ class Dado:
     def set_temperatura_quente_setpoint(self, setpoint):
         self._temperatura_quente_set_point = setpoint
         self.df.loc[0,'setpoint_quente'] = self._temperatura_quente_set_point
-        print(self.df.loc[0,'setpoint_quente'])
         self.df.to_csv('Controller/db.csv', index=False)
-
-    def set_valor_teclado_setpoint_quente(self, setpoint):
-        self._valor_teclado_setpoint_quente = setpoint
 
     def set_temperatura_fria_setpoint(self, setpoint):
         self._temperatura_fria_set_point = setpoint
         self.df.loc[0,'setpoint_frio'] = self._temperatura_fria_set_point
-        print(self.df.loc[0,'setpoint_frio'])
         self.df.to_csv('Controller/db.csv', index=False)
 
-
-    def set_valor_teclado_setpoint_frio(self, setpoint):
-        self._valor_teclado_setpoint_frio = setpoint
-
-    def set_pwm_circulacao_fria(self, valor):
-        self._pwm_circulacao_fria = valor
+    def set_pwm_circulacao_fria(self, setpoint):
+        self._pwm_circulacao_fria = setpoint
+        self.df.loc[0,'pwm_circulacao'] = self._pwm_circulacao_fria
+        self.df.to_csv('Controller/db.csv', index=False)
         
 
     
