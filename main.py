@@ -18,7 +18,7 @@ if __name__ == '__main__':
     # temp_quente = PTA9B(port_name='/dev/ttyUSB0',device_address=1, device_debug=True, res_ofset = -0.2)
     # temperatura = Temperatura()
     # temperatura.start()
-    window = MainWindow(dado=dado)
+    window = MainWindow(dado=dado, io=io)
     window.show() 
     # Quando fecha a aplicação, destroi a plicação no sistema bem como encerra todas as threads em execução.
     sys.exit([app.exec(), dado.temp.stop(), pwm.stop(), pwm_frio.stop(), io.stop()])

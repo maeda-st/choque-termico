@@ -30,7 +30,7 @@ class InOut:
 
         GPIO.setup(self.PROTECAO_TERMICA, GPIO.IN)
         GPIO.setup(self.BOTAO_EMERGENCIA, GPIO.IN)
-        GPIO.setup(self.PORTA_ABERTA_FECHADA, GPIO.IN)
+        GPIO.setup(self.PORTA_ABERTA_FECHADA, GPIO.IN, pull_up_down = GPIO.PUD_UP)
         
         GPIO.output(self.BUZZER, 0)
         GPIO.output(self.RESISTENCIAS, 0)

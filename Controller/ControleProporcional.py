@@ -18,12 +18,12 @@ class ControleProporcional(threading.Thread):
         self._running = True
         self._delay_refrigeracao = 4
         
-        self.start() 
+        self.start()
             
     def run(self):
         while self._running == True:
-            #if self._dado.controle_quente_estah_acionado == True and self.out.porta_aberta_fechada == 0:
-            if self._dado.controle_quente_estah_acionado:
+            if self._dado.controle_quente_estah_acionado == True and self.out.porta_aberta_fechada == 0:
+            #if self._dado.controle_quente_estah_acionado:
                 self.Et = self._dado.temperatura_quente_set_point - self._dado.temp.temperatura
                 self.Pb = self._dado.ganho_poporcional_temperatura_quente
 

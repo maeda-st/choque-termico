@@ -34,11 +34,12 @@ class Atualizador(QObject):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, dado=None):
+    def __init__(self, dado=None, io=None):
         super().__init__()
 
         self.janela_teste_saida = None
         self.dado = dado
+        self.io = io
 
         # Configuração da interface do usuário gerada pelo Qt Designer
         self.ui = Ui_MainForm()
@@ -57,20 +58,21 @@ class MainWindow(QMainWindow):
         self.ui.btManual.clicked.connect(self.operacao_manual)
 
     def operacao_manual(self):
-        self.janela_operacao_manual = OperacaoManual(dado=self.dado)
+        self.janela_operacao_manual = OperacaoManual(dado=self.dado, io=self.io)
         #self.janela2.showMaximized()
         self.janela_operacao_manual.exec_()
         # self.hide()
         # self.close()
 
 class OperacaoManual(QDialog):
-    def __init__(self, dado=None):
+    def __init__(self, dado=None, io = None):
         super().__init__()
 
         # Configuração da interface do usuário gerada pelo Qt Designer
         self.ui = Ui_formManual()
         self.ui.setupUi(self)
         self.dado = dado
+        self.io = io
 
         # Remover a barra de título e ocultar os botões de maximizar e minimizar
         # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
@@ -89,8 +91,12 @@ class OperacaoManual(QDialog):
 
         self.ui.btLigaQuente.clicked.connect(self.liga_controle_resistencias)
         self.ui.btDesligaQuente.clicked.connect(self.desliga_controle_resistencias)
+
         self.ui.btLigaFrio.clicked.connect(self.liga_controle_refrigeracao)
         self.ui.btDesligaFrio.clicked.connect(self.desliga_controle_refrigeracao)
+
+        self.ui.btElevadorSobe.clicked.connect(self.sobe_elevador)
+        self.ui.btElevadorDesce.clicked.connect(self.desce_elevador)
 
         self.ui.txSetPointQuente.setText(str(self.dado.temperatura_quente_set_point))
         self.ui.txSetPointFrio.setText(str(self.dado.temperatura_fria_set_point))
@@ -143,6 +149,12 @@ class OperacaoManual(QDialog):
 
     def desliga_controle_refrigeracao(self):
         self.dado._controle_frio_estah_acionado = False
+
+    def sobe_elevador(self):
+        self.io.elevador(1)
+
+    def desce_elevador(self):
+        self.io.elevador(0)
 
     def closeEvent(self, event):
         # self.origem = MainWindow()
