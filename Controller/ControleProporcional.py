@@ -1,9 +1,5 @@
-from collections.abc import Callable, Iterable, Mapping
-from typing import Any
-import minimalmodbus
 import time
 import threading
-import math
 
 class ControleProporcional(threading.Thread):
     def __init__(self, dado, saida):

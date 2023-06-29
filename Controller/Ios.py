@@ -31,22 +31,23 @@ class InOut:
         GPIO.setup(self.PROTECAO_TERMICA, GPIO.IN, pull_up_down = GPIO.PUD_UP)
         GPIO.setup(self.BOTAO_EMERGENCIA, GPIO.IN, pull_up_down = GPIO.PUD_UP)
         GPIO.setup(self.PORTA_ABERTA_FECHADA, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-        
+
+        self._delay_refrigeracao = Delay(tempo=10)
+
         self.buzzer(0)
         self.resistencias(0)
         self.circulacao_fria(0)
         self.elevador(0)
         self.refrigeracao(0)
         self.circulacao_quente(0)
-
-        self._delay_refrigeracao = Delay(tempo=10)
     
     def stop(self):
         self._delay_refrigeracao.stop()
 
         
     def buzzer(self, estado):
-        if estado == 1:# Ação invertida de controle
+        # Ação invertida de controle
+        if estado == 1:
             GPIO.output(self.BUZZER, 0)
         else:
             GPIO.output(self.BUZZER, 1)
@@ -64,14 +65,16 @@ class InOut:
             GPIO.output(self.CIRCULACAO_FRIA, 0)
 
     def elevador(self, estado):
-        if estado == 1:# Ação invertida de controle
+        # Ação invertida de controle
+        if estado == 1:
             GPIO.output(self.ELEVADOR, 0)
         else:
             GPIO.output(self.ELEVADOR, 1)
 
     def refrigeracao(self, estado):
         #delay = Delay()
-        if estado == 1:# Ação invertida de controle
+        # Ação invertida de controle
+        if estado == 1:
             if self._delay_refrigeracao._iniciar == False:
                 GPIO.output(self.REFRIGERACAO, 0)
         else:
@@ -79,7 +82,8 @@ class InOut:
             self._delay_refrigeracao._iniciar = True
 
     def circulacao_quente(self, estado):
-        if estado == 1:# Ação invertida de controle
+        # Ação invertida de controle
+        if estado == 1:
             GPIO.output(self.CIRCULACAO_QUENTE, 0)
         else:
             GPIO.output(self.CIRCULACAO_QUENTE, 1)
