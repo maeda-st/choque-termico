@@ -18,7 +18,7 @@ class ControleProporcional(threading.Thread):
             
     def run(self):
         while self._running == True:
-            if self._dado.controle_quente_estah_acionado == True and self.out.porta_aberta_fechada == 0:
+            if self._dado.controle_quente_estah_acionado == True:
             #if self._dado.controle_quente_estah_acionado:
                 self.Et = self._dado.temperatura_quente_set_point - self._dado.temp.temperatura
                 self.Pb = self._dado.ganho_poporcional_temperatura_quente
@@ -31,14 +31,18 @@ class ControleProporcional(threading.Thread):
                     self.Mv = 0
                 if self.Mv > 100:
                     self.Mv = 100
-
-                self.aciona_pwm(self.Mv)
                 
                 self.out.circulacao_quente(1)
-                self.out.resistencias(1)
-                time.sleep(self.ton_pwm)
-                self.out.resistencias(0)
-                time.sleep(self.toff_pwm)
+                self.aciona_pwm(self.Mv)
+                if self.out.porta_aberta_fechada == 1:
+                    self.out.resistencias(1)
+                    time.sleep(self.ton_pwm)
+                    self.out.resistencias(0)
+                    time.sleep(self.toff_pwm)
+                else:
+                    self.out.resistencias(0)
+                    self.out.circulacao_quente(0)
+                    #self._dado.controle_quente_estah_acionado = False
 
                 # print(self.Et)
                 # print(self.Pb)

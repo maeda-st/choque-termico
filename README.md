@@ -62,3 +62,21 @@ pyrcc5 nome_do_recurso.qrc -o nome_do_arquivo.py
 
 Esse arquivo .qrc é gerado no QT Designer e com o comando pyrcc5 faz-se a conversão para a extensão .py
 
+Fazer comando para que inicie o Raspberry rodando a aplicação:
+   
+a) Primeiro, abra o terminal e digite o seguinte comando para criar um arquivo .desktop no diretório autostart:
+
+```text
+sudo mousepad /etc/xdg/autostart/display.desktop .
+```
+Usamos display.desktop como nome de arquivo, mas você pode nomear o arquivo da área de trabalho como quiser.
+
+b) No arquivo .desktop, adicione as seguintes linhas de código:
+
+```text
+[Desktop Entry]
+Name=Choque-termico
+Exec=/usr/bin/python3 /home/maeda/choque-termico/main.py
+```
+
+O diretório /usr/bin/pythyon3 é onde está instalado o python,normalmente no raspberry esse é o local padrão.

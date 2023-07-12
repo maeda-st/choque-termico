@@ -47,6 +47,9 @@ class Ui_MainForm(object):
         font.setWeight(75)
         self.btManual.setFont(font)
         self.btManual.setObjectName("btManual")
+        self.txHidden = QtWidgets.QLineEdit(MainForm)
+        self.txHidden.setGeometry(QtCore.QRect(210, 180, 113, 30))
+        self.txHidden.setObjectName("txHidden")
 
         self.retranslateUi(MainForm)
         QtCore.QMetaObject.connectSlotsByName(MainForm)
@@ -57,7 +60,7 @@ class Ui_MainForm(object):
         self.btIniciar.setText(_translate("MainForm", "Inicar"))
         self.btConfig.setText(_translate("MainForm", "Configurar"))
         self.btManual.setText(_translate("MainForm", "Manual"))
-# import logo_rc
+#import logo_rc
 
 
 if __name__ == "__main__":

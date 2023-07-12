@@ -46,7 +46,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         # Remover a barra de título e ocultar os botões de maximizar e minimizar
-        # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
 
         # Obter o tamanho do monitor primário
         screen = QApplication.primaryScreen()
@@ -56,6 +56,8 @@ class MainWindow(QMainWindow):
         self.move(mainScreenRect.topLeft())
 
         self.ui.btManual.clicked.connect(self.operacao_manual)
+        self.mouseReleaseEvent = self.setfoccus
+        self.ui.txHidden.keyReleaseEvent = self.eventoteclado
 
     def operacao_manual(self):
         self.janela_operacao_manual = OperacaoManual(dado=self.dado, io=self.io)
@@ -63,6 +65,18 @@ class MainWindow(QMainWindow):
         self.janela_operacao_manual.exec_()
         # self.hide()
         # self.close()
+
+    def closeEvent(self, event):
+        pass
+
+    def setfoccus(self, event):
+        self.ui.txHidden.clear()
+        self.ui.txHidden.setFocus()
+
+    def eventoteclado(self, event):
+        carac = event.text()
+        if carac == 'q' or carac == 'Q':
+            self.close()
 
 class OperacaoManual(QDialog):
     def __init__(self, dado=None, io = None):
@@ -75,7 +89,7 @@ class OperacaoManual(QDialog):
         self.io = io
 
         # Remover a barra de título e ocultar os botões de maximizar e minimizar
-        # self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
 
         # Obter o tamanho do monitor primário
         screen = QApplication.primaryScreen()

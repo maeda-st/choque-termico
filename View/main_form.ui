@@ -92,6 +92,16 @@
     <string>Manual</string>
    </property>
   </widget>
+  <widget class="QLineEdit" name="txHidden">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>180</y>
+     <width>113</width>
+     <height>30</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="../img/logo.qrc"/>
