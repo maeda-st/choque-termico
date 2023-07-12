@@ -54,10 +54,15 @@ class MainWindow(QMainWindow):
 
         # Definir a posição da janela no canto superior esquerdo
         self.move(mainScreenRect.topLeft())
-
+    
         self.ui.btManual.clicked.connect(self.operacao_manual)
         self.mouseReleaseEvent = self.setfoccus
         self.ui.txHidden.keyReleaseEvent = self.eventoteclado
+
+        # faz com que o objeto fique invisível
+        self.ui.txHidden.setStyleSheet("background-color: rgba(0, 0, 0, 0); border: none;")
+
+        
 
     def operacao_manual(self):
         self.janela_operacao_manual = OperacaoManual(dado=self.dado, io=self.io)
