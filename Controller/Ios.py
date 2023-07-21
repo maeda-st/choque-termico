@@ -16,7 +16,7 @@ class InOut:
 
         self.PROTECAO_TERMICA = 12
         self.BOTAO_EMERGENCIA = 13
-        self.PORTA_ABERTA_FECHADA = 21
+        self.PORTA_ABERTA_FECHADA = 23
         
         GPIO.setmode(GPIO.BCM) 
         GPIO.setwarnings(False)

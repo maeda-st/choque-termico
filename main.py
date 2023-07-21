@@ -19,6 +19,7 @@ if __name__ == '__main__':
     # temperatura = Temperatura()
     # temperatura.start()
     window = MainWindow(dado=dado, io=io)
-    window.show() 
+    window.show()
     # Quando fecha a aplicação, destroi a plicação no sistema bem como encerra todas as threads em execução.
     sys.exit([app.exec(), dado.temp.stop(), pwm.stop(), pwm_frio.stop(), io.stop()])
+    #sys.exit([app.exec()])

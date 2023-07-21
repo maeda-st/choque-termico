@@ -4,8 +4,14 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt5.QtCore import Qt, QObject, pyqtSignal, QThread
 from View.main_form import Ui_MainForm
 from View.form_operacao_manual import Ui_formManual
+from View.main_start import Ui_Form
 from Controller.Teclados import NumericKeyboard, AlphanumericKeyboard
 import time
+
+from Controller.Dados import Dado
+from Controller.ControleProporcional import ControleProporcional, ControleFrio
+from Controller.Ios import InOut
+
 
 class Atualizador(QObject):
     sinal_atualizar = pyqtSignal(str, str)
@@ -61,8 +67,6 @@ class MainWindow(QMainWindow):
 
         # faz com que o objeto fique invisível
         self.ui.txHidden.setStyleSheet("background-color: rgba(0, 0, 0, 0); border: none;")
-
-        
 
     def operacao_manual(self):
         self.janela_operacao_manual = OperacaoManual(dado=self.dado, io=self.io)

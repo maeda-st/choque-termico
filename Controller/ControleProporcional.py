@@ -39,6 +39,7 @@ class ControleProporcional(threading.Thread):
                     time.sleep(self.ton_pwm)
                     self.out.resistencias(0)
                     time.sleep(self.toff_pwm)
+                    print(self.Mv)
                 else:
                     self.out.resistencias(0)
                     self.out.circulacao_quente(0)
@@ -46,7 +47,7 @@ class ControleProporcional(threading.Thread):
 
                 # print(self.Et)
                 # print(self.Pb)
-                print(self.Mv)
+                # print(self.Mv)
 
 
             else:

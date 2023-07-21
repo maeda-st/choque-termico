@@ -1,5 +1,5 @@
-import minimalmodbus
 import time
+import minimalmodbus
 import threading
 import math
 
@@ -29,6 +29,7 @@ class PTA9B(threading.Thread):
         self._running = True
 
         # MODBUS instrument initialization
+        
         try:
             self.instrument = minimalmodbus.Instrument(self.port_name, self.device_address, debug=self.device_debug)
             # MODBUS instrument connection settings
@@ -53,7 +54,14 @@ class PTA9B(threading.Thread):
         t=0
 
         try:
-            resistence = self.instrument.read_register(self.REGISTER_ADDRESS_RES, self.REGISTER_NUMBER_DECIMALS, self.ModBus_Command)
+            #resistence = self.instrument.read_register(self.REGISTER_ADDRESS_RES, self.REGISTER_NUMBER_DECIMALS, self.ModBus_Command)
+            resistence = 0
+            val_media = 50
+            for i in range(val_media):
+                resistence += self.instrument.read_register(self.REGISTER_ADDRESS_RES, self.REGISTER_NUMBER_DECIMALS, self.ModBus_Command)
+
+            resistence = resistence/val_media
+            
             Gr_y = (resistence - self.res_ofset) # Corrige a resistencia
             if Gr_y > self.range_temp_positivo:
                 

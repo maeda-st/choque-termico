@@ -10,7 +10,7 @@ class Dado:
 
         self._aciona_buzzer = True
 
-        self.df = pd.read_csv('Controller/db.csv')
+        self.df = pd.read_csv('/home/maeda/choque-termico/Controller/db.csv')
         
         self._cursor = 'cross'
         #self._cursor = 'none'
@@ -109,17 +109,17 @@ class Dado:
     def set_temperatura_quente_setpoint(self, setpoint):
         self._temperatura_quente_set_point = setpoint
         self.df.loc[0,'setpoint_quente'] = self._temperatura_quente_set_point
-        self.df.to_csv('Controller/db.csv', index=False)
+        self.df.to_csv('/home/maeda/choque-termico/Controller/db.csv', index=False)
 
     def set_temperatura_fria_setpoint(self, setpoint):
         self._temperatura_fria_set_point = setpoint
         self.df.loc[0,'setpoint_frio'] = self._temperatura_fria_set_point
-        self.df.to_csv('Controller/db.csv', index=False)
+        self.df.to_csv('/home/maeda/choque-termico/Controller/db.csv', index=False)
 
     def set_pwm_circulacao_fria(self, setpoint):
         self._pwm_circulacao_fria = setpoint
         self.df.loc[0,'pwm_circulacao'] = self._pwm_circulacao_fria
-        self.df.to_csv('Controller/db.csv', index=False)
+        self.df.to_csv('/home/maeda/choque-termico/Controller/db.csv', index=False)
         
 
     

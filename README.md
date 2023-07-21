@@ -75,8 +75,8 @@ b) No arquivo .desktop, adicione as seguintes linhas de código:
 
 ```text
 [Desktop Entry]
-Name=Choque-termico
-Exec=/usr/bin/python3 /home/maeda/choque-termico/main.py
+Name=choque-termico
+Exec=/usr/bin/python /home/maeda/choque-termico/main.py
 ```
 
-O diretório /usr/bin/pythyon3 é onde está instalado o python,normalmente no raspberry esse é o local padrão.
+O diretório /usr/bin/pythyon é onde está instalado o python,normalmente no raspberry esse é o local padrão.
