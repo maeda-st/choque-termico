@@ -2,9 +2,10 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLineEdit, QGridLayout, QDialog
 
 class AlphanumericKeyboard(QDialog):
-    def __init__(self, dado=None):
+    def __init__(self, dado=None, mode = None):
         super().__init__()
         self.dado = dado
+        self.mode = mode
         self.setWindowTitle("Teclado Alfanumérico")
         self.layout = QVBoxLayout()
         self.line_edit = QLineEdit()
@@ -41,8 +42,10 @@ class AlphanumericKeyboard(QDialog):
         self.line_edit.setText(current_text[:-1])
 
     def on_ok_click(self):
-        value = self.line_edit.text()
-        self.dado.set_valor_teclado_setpoint_quente(value)
+        # value = self.line_edit.text()
+        # if self.mode == 'nome_programa_cliclagem':
+        #     # self.dado.set_nome_programa_cliclagem(value)
+        #     print(value)
         self.close()
 
 class NumericKeyboard(QDialog):

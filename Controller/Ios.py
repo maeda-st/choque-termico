@@ -1,5 +1,3 @@
-from collections.abc import Callable, Iterable, Mapping
-from typing import Any
 import RPi.GPIO as GPIO
 import time
 import threading
@@ -13,6 +11,9 @@ class InOut:
         self.ELEVADOR = 19
         self.REFRIGERACAO = 5
         self.CIRCULACAO_QUENTE = 6
+
+        self.PARTE_QUENTE = 1
+        self.PARTE_FRIA = 0
 
         self.PROTECAO_TERMICA = 12
         self.BOTAO_EMERGENCIA = 13
@@ -32,7 +33,9 @@ class InOut:
         GPIO.setup(self.BOTAO_EMERGENCIA, GPIO.IN, pull_up_down = GPIO.PUD_UP)
         GPIO.setup(self.PORTA_ABERTA_FECHADA, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
-        self._delay_refrigeracao = Delay(tempo=10)
+        self._delay_refrigeracao = Delay(tempo=90)
+
+        self._status_elevador = ''
 
         self.buzzer(0)
         self.resistencias(0)
@@ -68,8 +71,10 @@ class InOut:
         # Ação invertida de controle
         if estado == 1:
             GPIO.output(self.ELEVADOR, 0)
+            self._status_elevador = 'quente'
         else:
             GPIO.output(self.ELEVADOR, 1)
+            self._status_elevador = 'frio'
 
     def refrigeracao(self, estado):
         #delay = Delay()
@@ -99,6 +104,10 @@ class InOut:
     @property
     def porta_aberta_fechada(self):
         return GPIO.input(self.PORTA_ABERTA_FECHADA)
+    
+    @property
+    def status_elevador(self):
+        return self._status_elevador
     
 class Delay(threading.Thread):
     def __init__(self, tempo = 4):
